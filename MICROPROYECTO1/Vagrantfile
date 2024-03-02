@@ -1,0 +1,43 @@
+Vagrant.configure("2") do |config|
+
+  if Vagrant.has_plugin? "vagrant-vbguest"
+    config.vbguest.no_install  = true
+    config.vbguest.auto_update = false
+    config.vbguest.no_remote   = true
+  end
+
+  config.vm.define :haproxy do |haproxy|
+    haproxy.vm.box = "bento/ubuntu-22.04"
+    haproxy.vm.network :private_network, ip: "192.168.100.2"
+    haproxy.vm.hostname = "haproxy"
+    haproxy.vm.provision "shell", path: "script/scripthap.sh"
+  end
+
+  config.vm.define :servidorweb1 do |servidorweb1|
+    servidorweb1.vm.box = "bento/ubuntu-22.04"
+    servidorweb1.vm.network :private_network, ip: "192.168.100.3"
+    servidorweb1.vm.hostname = "servidorweb1"
+    servidorweb1.vm.provision "shell", path: "script/scriptw1.sh"
+  end
+
+  config.vm.define :servidorweb2 do |servidorweb2|
+    servidorweb2.vm.box = "bento/ubuntu-22.04"
+    servidorweb2.vm.network :private_network, ip: "192.168.100.4"
+    servidorweb2.vm.hostname = "servidorweb2"
+    servidorweb2.vm.provision "shell", path: "script/scriptw2.sh"
+  end
+
+  config.vm.define :consul do |consul|
+    consul.vm.box = "bento/ubuntu-22.04"
+    consul.vm.network :private_network, ip: "192.168.100.5"
+    consul.vm.hostname = "consul"
+    consul.vm.provision "shell", path: "script/scriptc.sh"
+  end
+
+  config.vm.define :serverart do |serverart|
+    serverart.vm.box = "bento/ubuntu-22.04"
+    serverart.vm.network :private_network, ip: "192.168.100.6"
+    serverart.vm.hostname = "serverart"
+    serverart.vm.provision "shell", path: "script/aprov_art.sh"
+  end
+end
